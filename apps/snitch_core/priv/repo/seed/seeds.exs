@@ -1,5 +1,5 @@
 alias Snitch.Repo
-alias Snitch.Seed.{CountryState, PaymentMethods, Orders, Users, Taxonomy}
+alias Snitch.Seed.{CountryState, PaymentMethods, Orders, Users, Taxonomy, Stocks}
 
 # Script for populating the database. You can run it as:
 #
@@ -12,9 +12,6 @@ alias Snitch.Seed.{CountryState, PaymentMethods, Orders, Users, Taxonomy}
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
-
-alias Snitch.Repo
-alias Snitch.Seed.{CountryState, PaymentMethods, Orders, Users, Stocks}
 
 variant_count = 9
 
