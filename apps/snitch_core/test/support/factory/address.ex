@@ -8,8 +8,7 @@ defmodule Snitch.Factory.Address do
       def state_factory do
         %State{
           name: "California",
-          code: sequence("US-CA"),
-          country: build(:country)
+          code: sequence("US-CA")
         }
       end
 
@@ -40,8 +39,9 @@ defmodule Snitch.Factory.Address do
       end
 
       def states(context) do
+        country = insert(:country)
         count = Map.get(context, :state_count, 1)
-        [states: insert_list(count, :state)]
+        [states: insert_list(count, :state, country: country)]
       end
 
       def countries(context) do

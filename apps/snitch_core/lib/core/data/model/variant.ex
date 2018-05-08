@@ -6,6 +6,6 @@ defmodule Snitch.Data.Model.Variant do
   alias Snitch.Data.Schema.Variant
 
   def get_category(%Variant{} = v) do
-    0
+    %{id: 0}
   end
 end
