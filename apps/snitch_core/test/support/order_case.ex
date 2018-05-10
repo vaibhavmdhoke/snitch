@@ -8,7 +8,8 @@ defmodule Snitch.OrderCase do
     variant_id: nil,
     order_id: nil,
     inserted_at: Ecto.DateTime.utc(),
-    updated_at: Ecto.DateTime.utc()
+    updated_at: Ecto.DateTime.utc(),
+    weight: nil
   }
 
   def line_items(variants, quantities, order_id \\ nil) do
@@ -16,7 +17,7 @@ defmodule Snitch.OrderCase do
     |> Stream.zip(quantities)
     |> Enum.map(fn
       {v, q} when is_map(v) ->
-        %{@line_item | quantity: q, variant_id: v.id, order_id: order_id}
+        %{@line_item | quantity: q, variant_id: v.id, order_id: order_id, weight: v.weight}
 
       {v, q} when is_integer(v) ->
         %{@line_item | quantity: q, variant_id: v, order_id: order_id}
