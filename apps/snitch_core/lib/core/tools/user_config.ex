@@ -3,6 +3,9 @@ defmodule Snitch.Tools.UserConfig do
   Helper to fetch user configurations.
   """
 
+  @callback fetch(atom) :: {:ok, term} | :error
+  @callback get(atom) :: term
+
   @doc """
   Fetches data from `config` defined by users in their application.
 
@@ -20,7 +23,7 @@ defmodule Snitch.Tools.UserConfig do
   end
 
   @doc """
-  Fetches data from `config` defined by users in their application.
+  Gets data from `config` defined by users in their application.
 
   The function takes the `key` as input to fetch data for and returns 
   the `value` corresponding to that key.
