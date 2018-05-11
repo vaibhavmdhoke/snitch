@@ -25,11 +25,11 @@ defmodule Snitch.Data.Schema.TaxRate do
 
   @required_params ~w(name value tax_category_id calculator)a
   @optional_params ~w(zone_id deleted_at)a
-  @create_params @required_params + @optional_params
-  @update_params @required_params + @optional_params
+  @create_params @required_params ++ @optional_params
+  @update_params @required_params ++ @optional_params
 
   @doc """
-  Returns a changeset to create a new TaxRate
+  Returns a changeset to create a new TaxRate.
   """
   @spec create_changeset(t, map) :: Ecto.Changeset.t()
   def create_changeset(%__MODULE__{} = tax_rate, params) do
@@ -52,5 +52,12 @@ defmodule Snitch.Data.Schema.TaxRate do
     changeset
     |> validate_required(@required_params)
     |> validate_number(:value, greater_than: 0)
+    |> modify_calculator_name()
   end
+
+  defp modify_calculator_name(%{valid?: true, changes: %{calculator: calc_name}} = changeset) do
+    put_change(changeset, :calculator, String.to_atom("Elixir.#{calc_name}"))
+  end
+
+  defp modify_calculator_name(changeset), do: changeset
 end

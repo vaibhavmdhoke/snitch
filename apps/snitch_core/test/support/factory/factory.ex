@@ -14,7 +14,8 @@ defmodule Snitch.Factory do
     PaymentMethod,
     CardPayment,
     Card,
-    TaxCategory
+    TaxCategory,
+    TaxRate
   }
 
   alias Snitch.Repo
@@ -121,6 +122,15 @@ defmodule Snitch.Factory do
     }
   end
 
+  def tax_rate_factory do
+    %TaxRate{
+      name: "North America",
+      value: 0.5,
+      included_in_price: false,
+      calculator: DefaultCalculator
+    }
+  end
+
   defp random_price(min, delta) do
     Money.new(:USD, "#{:rand.uniform(delta) + min}.99")
   end
@@ -200,5 +210,18 @@ defmodule Snitch.Factory do
   def tax_categories(context) do
     count = Map.get(context, :tax_category_count, 3)
     [tax_categories: insert_list(count, :tax_category)]
+  end
+
+  def tax_rate(_context) do
+    tc = insert(:tax_category)
+    zone = insert(:zone, %{zone_type: "S"})
+    [tax_rate: insert(:tax_rate, %{tax_category_id: tc.id, zone_id: zone.id})]
+  end
+
+  def tax_rates(context) do
+    tc = insert(:tax_category)
+    zone = insert(:zone, %{zone_type: "S"})
+    count = Map.get(context, :tax_rate_count, 3)
+    [tax_rates: insert_list(count, :tax_rate, %{tax_category_id: tc.id, zone_id: zone.id})]
   end
 end
