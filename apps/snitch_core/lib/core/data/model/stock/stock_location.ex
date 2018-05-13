@@ -49,4 +49,8 @@ defmodule Snitch.Data.Model.StockLocation do
   """
   @spec active :: list(StockLocationSchema.t())
   def active, do: Repo.all(from(sl in StockLocationSchema, where: sl.active == true))
+
+  def search(params) do
+    Repo.all(StockLocationSchema)
+  end
 end

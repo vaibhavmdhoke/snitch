@@ -18,12 +18,13 @@ defmodule AdminAppWeb.Router do
     pipe_through(:browser)
 
     get("/", PageController, :index)
-    get("/stock_locations", StockLocationsController, :index)
 
     resources("/orders", OrderController, only: ~w[index show]a, param: "slug") do
       get("/cart", OrderController, :edit, as: :cart)
       post("/cart", OrderController, :update, as: :cart)
     end
+    get("/stock_locations", StockLocationController, :index)
+    get("/stock_locations/list", StockLocationController, :list)
   end
 
   # Other scopes may use custom stacks.
