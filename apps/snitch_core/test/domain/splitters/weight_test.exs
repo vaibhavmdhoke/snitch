@@ -45,8 +45,6 @@ defmodule Snitch.Domain.Splitter.WeightTest do
       order = %Order{id: 42, line_items: line_items}
 
       packages = Shipment.default_packages(order)
-      require IEx
-      IEx.pry
       WeightSplitter.split()
     end
   end
