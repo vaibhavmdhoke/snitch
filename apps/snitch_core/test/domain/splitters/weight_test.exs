@@ -45,7 +45,7 @@ defmodule Snitch.Domain.Splitter.WeightTest do
       order = %Order{id: 42, line_items: line_items}
 
       packages = Shipment.default_packages(order)
-      WeightSplitter.split()
+      WeightSplitter.split(packages)
     end
   end
 
@@ -72,9 +72,10 @@ defmodule Snitch.Domain.Splitter.WeightTest do
   end
 
   def random_weight_variants(_context) do
-   variants =
-     [1.0, 2.0, 150.0]
-     |> Enum.map(fn weight -> insert(:random_variant, %{weight: Decimal.new(weight)}) end)
-  [variants: variants]
+    variants =
+      [100.0, 20.0, 150.0]
+      |> Enum.map(fn weight -> insert(:random_variant, %{weight: Decimal.new(weight)}) end)
+
+    [variants: variants]
   end
 end

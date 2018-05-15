@@ -1,9 +1,16 @@
 defmodule Snitch.Core.Domain.Splitters.Weight do
-  @bin_threshold 7
+  @bin_threshold Decimal.new(150)
 
   def split(packages) do
-    packages
-    |> Enum.map(&sort_line_items_by_weight/1)
+    sorted_packages =
+      packages
+      |> Enum.map(&sort_line_items_by_weight/1)
+
+    t =
+      sorted_packages
+      |> Enum.map(fn package ->
+        Enum.reduce(package.items, [], &add_item_to_bin/2)
+      end)
   end
 
   def sort_line_items_by_weight(package) do
@@ -27,18 +34,20 @@ defmodule Snitch.Core.Domain.Splitters.Weight do
   end
 
   def put_in_bin(item, [first_bin | rest_bins], acc) do
-    total = first_bin |> Enum.reduce(0, fn item, acc -> item + acc end)
+    total =
+      first_bin
+      |> Enum.reduce(Decimal.new(0), fn item, acc -> Decimal.add(item.variant.weight, acc) end)
 
-    next_total = total + item
+    next_total = Decimal.add(total, item.variant.weight)
 
-    case next_total <= @bin_threshold do
-      true ->
+    case Decimal.cmp(next_total, @bin_threshold) do
+      :gt ->
+        put_in_bin(item, rest_bins, acc)
+
+      _ ->
         update_bin = [item | first_bin]
         temp = List.delete(acc, first_bin)
         [update_bin | temp]
-
-      false ->
-        put_in_bin(item, rest_bins, acc)
     end
   end
 
